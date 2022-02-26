@@ -1,0 +1,8 @@
+server:
+  port: 8761
+eureka:
+  client:
+    # 自己本身就是注册中心, 所以设置为 false
+    register-with-eureka: false
+    # 获取注册表
+    fetch-registry: false
