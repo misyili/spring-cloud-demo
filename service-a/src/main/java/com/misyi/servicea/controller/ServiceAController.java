@@ -13,6 +13,7 @@ public class ServiceAController {
 
     @GetMapping("say-hello/{name}")
     public String sayHello(@PathVariable String name) {
+        System.out.println("被调用一次!");
         return "Hello, " + name + "!";
     }
 
