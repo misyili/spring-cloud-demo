@@ -5,4 +5,4 @@
 
 在两个 eureka 控制台可以看到相互的副本: DS Replicas
 
-![](.REDEME_images/eureka cluster 成功示例.png)
+![eureka cluster 成功示例](.REDEME_images/eureka cluster 成功示例.png)
