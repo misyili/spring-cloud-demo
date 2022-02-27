@@ -6,3 +6,6 @@ eureka:
     register-with-eureka: false
     # 获取注册表
     fetch-registry: false
+  server:
+    # 自我保护: 如果客户端的心跳失败了超过一定的比例，或者说在一定时间内（15分钟）接收到的服务续约低于85%, 则不会立即把失效的服务摘除
+    enable-self-preservation: false
