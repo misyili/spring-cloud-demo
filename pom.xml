@@ -11,6 +11,7 @@
   <modules>
     <module>eureka-service</module>
     <module>service-a</module>
+    <module>service-b</module>
   </modules>
 
   <name>spring-cloud-demo</name>
