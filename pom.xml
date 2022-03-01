@@ -13,6 +13,7 @@
     <module>eureka-service</module>
     <module>service-a</module>
     <module>service-b</module>
+    <module>eureka-1.7.x</module>
   </modules>
 
   <name>spring-cloud-demo</name>
