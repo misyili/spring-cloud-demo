@@ -1,8 +1,11 @@
 apply plugin: 'war'
 
 dependencies {
+    // eureka 本身也是一个 client, 当部署集群时, eureka 需要充当一个 client 注册到其他 eureka 上.
     compile project(':eureka-client')
+    // eureka-core: 就是核心的注册中心, 接收服务请求\提供服务发现功能\保持心跳\摘除故障实例等功能.
     compile project(':eureka-core')
+    // jersey 国外使用比较多的一个基于 RESTFUL 的服务框架, 类似于 Spring MVC.
     compile "com.sun.jersey:jersey-server:$jerseyVersion"
     compile "com.sun.jersey:jersey-servlet:$jerseyVersion"
     compile 'org.slf4j:slf4j-log4j12:1.6.1'
@@ -14,6 +17,7 @@ dependencies {
     providedCompile "javax.servlet:servlet-api:$servletVersion"
 
     testCompile project(':eureka-test-utils')
+    // mockito : mock 测试框架, eureka 每个工程中都有 src/test/java, 里面有针对本工程的单元测试, 都是基于 mockito 框架的.
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
     testCompile "org.eclipse.jetty:jetty-server:$jetty_version"
     testCompile "org.eclipse.jetty:jetty-webapp:$jetty_version"
