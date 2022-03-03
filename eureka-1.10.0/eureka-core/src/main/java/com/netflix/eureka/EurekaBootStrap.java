@@ -16,17 +16,7 @@
 
 package com.netflix.eureka;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.util.Date;
-
-import com.netflix.appinfo.ApplicationInfoManager;
-import com.netflix.appinfo.CloudInstanceConfig;
-import com.netflix.appinfo.DataCenterInfo;
-import com.netflix.appinfo.EurekaInstanceConfig;
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.appinfo.MyDataCenterInstanceConfig;
+import com.netflix.appinfo.*;
 import com.netflix.appinfo.providers.EurekaConfigBasedInstanceInfoProvider;
 import com.netflix.config.ConfigurationManager;
 import com.netflix.config.DeploymentContext;
@@ -48,6 +38,11 @@ import com.netflix.eureka.util.EurekaMonitors;
 import com.thoughtworks.xstream.XStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.util.Date;
 
 /**
  * The class that kick starts the eureka server.
@@ -110,6 +105,7 @@ public class EurekaBootStrap implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         try {
+            // 初始化环境
             initEurekaEnvironment();
             initEurekaServerContext();
 
