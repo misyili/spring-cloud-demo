@@ -143,7 +143,7 @@ public class EurekaBootStrap implements ServletContextListener {
     protected void initEurekaServerContext() throws Exception {
         EurekaServerConfig eurekaServerConfig = new DefaultEurekaServerConfig();
 
-        // For backward compatibility
+        // For backward compatibility (向后兼容)
         JsonXStream.getInstance().registerConverter(new V1AwareInstanceInfoConverter(), XStream.PRIORITY_VERY_HIGH);
         XmlXStream.getInstance().registerConverter(new V1AwareInstanceInfoConverter(), XStream.PRIORITY_VERY_HIGH);
 
