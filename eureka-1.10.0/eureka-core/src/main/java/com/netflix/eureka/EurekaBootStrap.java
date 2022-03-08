@@ -107,6 +107,8 @@ public class EurekaBootStrap implements ServletContextListener {
         try {
             // 初始化环境
             initEurekaEnvironment();
+            // 初始化 eureka-server 配置，如果没有配置，则都采用默认值。在 eureka-server.properties 中是没有任何预设配置的
+            // 使用的是代码中的硬编码值
             initEurekaServerContext();
 
             ServletContext sc = event.getServletContext();
@@ -123,6 +125,11 @@ public class EurekaBootStrap implements ServletContextListener {
     protected void initEurekaEnvironment() throws Exception {
         logger.info("Setting the eureka configuration..");
 
+        // ConfigurationManager 单例模式初始化一个配置管理器的实例, 管理 Eureka 所需要的所有的配置读取到内存中
+        // 经典的单例: 使用 double check , 以及对 instance 加了一个 volatile (保证可见性)
+        // 加了 volatile 的变量如果在线程内存中创建后, 会刷新到主存中, 并将其他线程中读取了该变量的内存设置为失效
+
+        // 一般如果是底层的框架, 会设计一个 ConfigurationManager 配置管理器
         String dataCenter = ConfigurationManager.getConfigInstance().getString(EUREKA_DATACENTER);
         if (dataCenter == null) {
             logger.info("Eureka data center value eureka.datacenter is not set, defaulting to default");
@@ -141,7 +148,11 @@ public class EurekaBootStrap implements ServletContextListener {
      * init hook for server context. Override for custom logic.
      */
     protected void initEurekaServerContext() throws Exception {
+        // 第一步：加载 eureka-server.properties 中的配置。
+        // eureka 中所有的配置都可以用 EurekaServerConfig 通过 getXxx 来获取。
         EurekaServerConfig eurekaServerConfig = new DefaultEurekaServerConfig();
+        // 一般我们自己设计的时候将配置加载到 Properties 类中就不管了，这里设计了一个接口来进行获取。 这是一种设计思想
+        // DefaultEurekaServerConfig 包含了很多硬编码的默认配置
 
         // For backward compatibility (向后兼容)
         JsonXStream.getInstance().registerConverter(new V1AwareInstanceInfoConverter(), XStream.PRIORITY_VERY_HIGH);
@@ -151,6 +162,7 @@ public class EurekaBootStrap implements ServletContextListener {
         logger.info(eurekaServerConfig.getJsonCodecName());
         ServerCodecs serverCodecs = new DefaultServerCodecs(eurekaServerConfig);
 
+        // 第二步：初始化 eureka-server 中的 一个 eureka-client，用来和其他的 eureka-server 进行注册和通信
         ApplicationInfoManager applicationInfoManager = null;
 
         if (eurekaClient == null) {
@@ -167,6 +179,7 @@ public class EurekaBootStrap implements ServletContextListener {
             applicationInfoManager = eurekaClient.getApplicationInfoManager();
         }
 
+        // 第三步：
         PeerAwareInstanceRegistry registry;
         if (isAws(applicationInfoManager.getInfo())) {
             registry = new AwsInstanceRegistry(
