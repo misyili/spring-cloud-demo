@@ -1,20 +1,15 @@
 package com.netflix.appinfo.providers;
 
-import javax.inject.Singleton;
-import javax.inject.Provider;
-import java.util.Map;
-
 import com.google.inject.Inject;
-import com.netflix.appinfo.DataCenterInfo;
-import com.netflix.appinfo.EurekaInstanceConfig;
-import com.netflix.appinfo.InstanceInfo;
+import com.netflix.appinfo.*;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.appinfo.InstanceInfo.PortType;
-import com.netflix.appinfo.LeaseInfo;
-import com.netflix.appinfo.RefreshableInstanceConfig;
-import com.netflix.appinfo.UniqueIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Provider;
+import javax.inject.Singleton;
+import java.util.Map;
 
 /**
  * InstanceInfo provider that constructs the InstanceInfo this this instance using
@@ -43,6 +38,7 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
     }
 
     @Override
+    // 当前服务的本身的信息
     public synchronized InstanceInfo get() {
         if (instanceInfo == null) {
             // Build the lease information to be passed to the server based on config
@@ -113,6 +109,7 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
             }
 
             // Add any user-specific metadata information
+            // 获取配置中自定义的元数据
             for (Map.Entry<String, String> mapEntry : config.getMetadataMap().entrySet()) {
                 String key = mapEntry.getKey();
                 String value = mapEntry.getValue();
